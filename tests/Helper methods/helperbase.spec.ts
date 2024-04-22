@@ -1,6 +1,7 @@
 import {Page, Locator} from '@playwright/test'
 
 
+
 class HelperBase{
     page: Page;
     pageURL: string;
@@ -23,6 +24,7 @@ class HelperBase{
         this.aboutMeDesc = "As an accountant, I've helped my company manage and optimize its financial operations. My experience and education have enabled me to provide unparalleled insight into the company's fiscal performance, which worked to expand revenue by $560,000 in two years. My affinity for numbers, dedication and attention to detail can help me improve your company's financial performance and enhance your fiscal achievements. As an accountant, I've helped my company manage and optimize its financial operations. My experience and education have enabled me to provide unparalleled insight into the company's fiscal performance, which worked to expand revenue by $560,000 in two years. My affinity for numbers, dedication and attention to detail can help me improve your company's financial performance and enhance your fiscal achievements. As an accountant, I've helped my company manage and optimize its financial operations. My experience and education have enabled me to provide unparalleled insight into the company's fiscal performance, which worked to expand revenue by $560,000 in two years. My affinity for numbers, dedication and attention to detail can help me improve your company's financial performance and enhance your fiscal achievements.";
         
     }
+    
     async navigate(){
         await this.page.goto('https://kind-sea-081d87a00.2.azurestaticapps.net/home');
         
@@ -30,10 +32,11 @@ class HelperBase{
     async loginAsEmployee(){
         await this.navigate();
         await this.email.fill('devanshi.patel@1rivet.com');
+        // await this.email.fill('urvi.talekar@1rivet.com');
         await this.nextBtn.click();
         await this.password.fill('2526@Dgp');
-        await this.signIn.click();
-       
+        // await this.password.fill('Flax@2023');
+        await this.signIn.click();      
         console.log('Employee role is logged in');
 
     }
@@ -43,8 +46,7 @@ class HelperBase{
         await this.email.fill('1talent.hr@1rivet.com');
         await this.nextBtn.click();
         await this.password.fill('fW959#OnSF@EtuUo');
-        await this.signIn.click();
-       
+        await this.signIn.click();      
         console.log('HR role is logged in');
     }
 

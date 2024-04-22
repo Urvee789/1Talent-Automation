@@ -176,7 +176,7 @@ test('TS_GI_09 - Validate Add new functionality with valid data in Family Detail
     await cm_loc.myProfileBtn.click();
 
     //click on add button of Family Details ection
-    await page.locator('(//div[contains(@class,"mantine-Grid-col mantine-hgxo0i")] //span[contains(text(),"Add")])[1]').click();
+    await page.locator('xpath=(//div[contains(@class,"mantine-Grid-col mantine-hgxo0i")] //span[contains(text(),"Add")])[1]').click();
     await page.waitForTimeout(3000);
 
     //add details on Add Family Details form
@@ -210,7 +210,7 @@ test('TS_GI_10 - Validate Edit functionality with valid data in Family Details s
     await cm_loc.myProfileBtn.click();
 
     //click on ellipsis icon of Family details tile
-    await page.locator('(//*[name()="svg"][@class="tabler-icon tabler-icon-dots-vertical"])[1]').click();
+    await page.locator('xpath=(//*[name()="svg"][@class="tabler-icon tabler-icon-dots-vertical"])[1]').click();
 
     await page.locator('.mantine-1eawhj0 >> text=Edit').click();
 
@@ -608,9 +608,9 @@ test('TS_GI_32 - Validate Edit functionality with valid data in Skills section.'
     await cm_loc.myProfileBtn.click();
 
     //click on Edit button of Soft skills section
-    await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Edit")])[3]').click();
+    await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"])[5]').click();
     await page.locator('xpath=//input[@placeholder="Enter your soft skills"]').clear();
-    await page.locator('//input[@placeholder="Enter your soft skills"]').fill('Hardworking, Focused');
+    await page.locator('xpath=//input[@placeholder="Enter your soft skills"]').fill('Hardworking, Focused');
 
     await cm_loc.saveBtn.click();
     await expect(cm_loc.successMsg).toBeVisible();
@@ -630,6 +630,7 @@ test('TS_GI_34 - Validate Edit functionality with invalid data in Skills section
     await cm_loc.myProfileBtn.click();
 
     //click on Edit button of Soft skills section
+    await page.waitForTimeout(2000);
     await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Edit")])[3]').click();
     await page.locator('xpath=//input[@placeholder="Enter your soft skills"]').clear();
     await page.locator('xpath=//input[@placeholder="Enter your soft skills"]').fill('^&**()))');
@@ -639,4 +640,316 @@ test('TS_GI_34 - Validate Edit functionality with invalid data in Skills section
     await expect(softskillsErrorMsg).toBeVisible();
 
     console.log('Soft skills section is having invalid data');
+})
+
+test('TS_GI_35 - Validate Cancel button functionality of Skills section.', async ({ page }) => {
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+    //click on Edit button of Soft skills section
+    await page.waitForTimeout(2000);
+    await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Edit")])[3]').click();
+    await page.locator('xpath=//input[@placeholder="Enter your soft skills"]').clear();
+    await page.locator('xpath=//input[@placeholder="Enter your soft skills"]').fill('Edited text');
+
+    //click on Cancel button and verify confirmation pop-up
+    await cm_loc.cancelBtn.click();
+    await expect(cm_loc.unsavedPopUp).toBeVisible();
+    await cm_loc.yesBtn.click();
+    console.log('Skills update action is cancelled');
+
+})
+
+test('TS_GI_36 - Validate Add new functionality with valid data in Languages section.', async ({ page }) => {
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+    //click on Add button of Languages section and enter details in fields
+    await page.waitForTimeout(2000);
+    await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Add")])[4]').click();
+    const selectLang = page.locator('xpath=//input[@placeholder="Select Language"]');
+    await selectLang.click();
+    await page.getByRole('option', { name: 'Hindi', exact: true}).click();
+
+    const selectProficiency =  page.locator('xpath=//input[@placeholder="Select Proficiency"]');
+    await selectProficiency.click();
+    await page.getByRole('option',{name: 'Intermediate', exact: true}).click();
+
+    //click on Save button and verify success message
+    await cm_loc.saveBtn.click();
+    await expect(cm_loc.successMsg).toBeVisible();
+    console.log('Languages detail are updated')
+})
+
+test('TS_GI_37 - Validate Edit new functionality with valid data in Languages section.', async ({ page }) => {
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+    //click on Add button of Languages section and enter details in fields
+    await page.waitForTimeout(1000);
+    await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Edit")])[4]').click();
+    const selectLang = page.locator('xpath=//input[@placeholder="Select Language"]');
+    await selectLang.click();
+    await page.getByRole('option',{name: 'Gujarati', exact: true}).click();
+
+    const selectProficiency =  page.locator('xpath=//input[@placeholder="Select Proficiency"]');
+    await selectProficiency.click();
+    await page.getByRole('option',{ name: 'Elementary'}).click();
+ 
+
+    //click on Save button and verify success message
+    await cm_loc.saveBtn.click();
+    await expect(cm_loc.successMsg).toBeVisible();
+    console.log('Languages detail are updated')
+})
+
+test('TS_GI_40 - Validate Delete functionality of Languages section.', async ({ page }) => {
+ 
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+    //click on Edit button of Languages section and delete a record
+    await page.waitForTimeout(2000);
+    await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Edit")])[4]').click();
+  
+    //click on Delete button and verify success message
+    await page.locator('xpath=//div[@class="mantine-1rv86hq"]//div[1]//div[3]//button[1]//*[name()="svg"]//*[name()="path" and contains(@d,"M9 7v-3a1 ")]').click();
+    await cm_loc.saveBtn.click();
+    await page.waitForTimeout(2000);
+    await expect(cm_loc.successMsg).toBeVisible();
+    console.log('Languages detail are updated')
+})
+
+test('TS_GI_41 - Validate Cancel button functionality of Languages section.', async ({ page }) => {
+ 
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+    //click on Edit button of Languages section and delete a record
+    await page.waitForTimeout(2000);
+    await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Edit")])[4]').click();
+
+    //click on Cancel button
+    await cm_loc.cancelBtn.click();
+    console.log('Language section updation is cancelled');
+
+})
+
+test('TS_GI_42 - Validate Add new functionality with valid data in Social Media section.', async ({ page }) => {
+  
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+    //click on Add button of Social media accounts section and add details
+    await page.waitForTimeout(2000);
+    await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Add")])[3]').click();
+
+    //fill details on Social media account form
+    await page.waitForTimeout(2000);
+    await page.evaluate(() => {
+    window.scrollBy(0, 100);
+    });
+    const socialMediaAcc = page.locator('xpath=//input[@placeholder="Select Social Media Platform"]');
+    await socialMediaAcc.click();
+    await page.waitForTimeout(1000);
+    await page.getByRole('option', {name: 'YouTube'}).click();
+
+    await page.locator('xpath=//input[@placeholder="Paste your Social Media Profile URL"]').fill('https://www.youtube.com');
+
+    await page.waitForTimeout(1000);
+    await cm_loc.saveBtn.click();
+    await expect(cm_loc.successMsg).toBeVisible();
+
+})
+
+test('TS_GI_43 - Validate Edit functionality with valid data in Social Media section.', async ({ page }) => {
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+    //click on Edit button of Social media accounts section and add details
+    await page.waitForTimeout(2000);
+    await page.evaluate(() => {
+    window.scrollBy(0, 100);
+    });
+    await page.locator('xpath=(//*[name()="svg"][@class="tabler-icon tabler-icon-dots-vertical"])[4]').click();
+    await page.locator('xpath=//div[contains(text(),"Edit")]').click();
+  
+    
+    //fill details on Social media account form
+    const socialMediaAcc = page.locator('xpath=//input[@placeholder="Select Social Media Platform"]');
+    await socialMediaAcc.click();
+    await page.waitForTimeout(1000);
+    await page.getByRole('option', {name: 'LinkedIn'}).click();
+
+    await page.locator('xpath=//input[@placeholder="Paste your Social Media Profile URL"]').fill('https://www.linkedin.com');
+
+    await page.waitForTimeout(1000);
+    await cm_loc.saveBtn.click();
+    await expect(cm_loc.successMsg).toBeVisible();
+    console.log('Social Media accounts section is updated');
+})
+
+test('TS_GI_44 - Validate Add new functionality with invalid data in Social Media section.', async ({ page }) => {
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+    //click on Add button of Social media accounts section and add details
+    await page.waitForTimeout(2000);
+    await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Add")])[3]').click();
+
+    //leave the fields blank and verify validation message
+    await page.waitForTimeout(2000);
+    await page.evaluate(() => {
+    window.scrollBy(0, 100);
+    });
+    const socialMediaAcc = page.locator('xpath=//input[@placeholder="Select Social Media Platform"]');
+
+    await cm_loc.saveBtn.click();
+
+    //verify validations 
+    const socialMediaPlatformError = page.locator('xpath=//div[contains(text(),"Please select a Social Media Platform.")]');
+    await expect(socialMediaPlatformError).toContainText('Please select a Social Media Platform.');
+
+    const profileURLError = page.locator('xpath=//div[contains(text(),"Please paste a Social Media Profile URL.")]');
+    await expect(profileURLError).toContainText('Please paste a Social Media Profile URL.');
+
+    console.log('Invalid data entered on Social Media accounts form');
+})
+
+test('TS_GI_46 - Validate Delete functionality of Social Media section.', async ({ page }) => {
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+     //click on Edit button of Social media accounts section and add details
+     await page.waitForTimeout(2000);
+     await page.evaluate(() => {
+     window.scrollBy(0, 100);
+     });
+     await page.locator('xpath=(//*[name()="svg"][@class="tabler-icon tabler-icon-dots-vertical"])[4]').click();
+     
+     //click on Delete button and verify confirmatoion message
+     await page.locator('xpath=//div[contains(text(),"Delete")]').click();
+     const deletepopup = page.locator('xpath=//div[contains(text(),"Delete Confirmation")]');
+     await cm_loc.deleteBtn.click();
+     await expect(cm_loc.successMsg).toBeVisible();
+     console.log('Social Media account is deleted');
+})
+
+test('TS_GI_47 - Validate Cancel button functionality of Social Media section.', async ({ page }) => {
+    helper = new HelperBase(page);
+    cm_loc = new CommonLocators(page);
+    await helper.navigate();
+    await helper.loginAsEmployee();
+
+    //------test case steps------
+
+    //click on user profile and navigate to My Profile page
+    await helper.userProfile.click();
+    await cm_loc.myProfileBtn.click();
+
+     //click on Add button of Social media accounts section and add details
+     await page.waitForTimeout(2000);
+     await page.locator('xpath=(//button[@class="mantine-UnstyledButton-root mantine-Button-root mantine-wmij6j"]//span[contains(text(),"Add")])[3]').click();
+ 
+     //fill details on Social media account form
+     await page.waitForTimeout(2000);
+     await page.evaluate(() => {
+     window.scrollBy(0, 100);
+     });
+  
+     await cm_loc.cancelBtn.click();
+  
+     //check cancellation flow in edit detail mode
+     await page.locator('xpath=(//*[name()="svg"][@class="tabler-icon tabler-icon-dots-vertical"])[4]').click();
+     await page.locator('xpath=//div[contains(text(),"Edit")]').click();
+   
+     
+     //fill details on Social media account form
+     const socialMediaAcc1 = page.locator('xpath=//input[@placeholder="Select Social Media Platform"]');
+     await socialMediaAcc1.click();
+     await page.waitForTimeout(1000);
+     await page.getByRole('option', {name: 'LinkedIn'}).click();
+ 
+     await page.locator('xpath=//input[@placeholder="Paste your Social Media Profile URL"]').fill('https://www.linkedin.com');
+
+     await cm_loc.cancelBtn.click();
+     await cm_loc.noBtn.click();
+     
+     await page.waitForTimeout(2000);
+     await cm_loc.cancelBtn.click();
+     await cm_loc.yesBtn.click();
+     console.log('Social media account editing is cancelled');
+
 })
