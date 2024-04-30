@@ -26,7 +26,8 @@ class HelperBase{
     }
     
     async navigate(){
-        await this.page.goto('https://kind-sea-081d87a00.2.azurestaticapps.net/home');
+        // await this.page.goto('https://kind-sea-081d87a00.2.azurestaticapps.net/home'); //QA
+        await this.page.goto('https://1talent.1rivet.com/'); //PROD
         
     }
     async loginAsEmployee(){
